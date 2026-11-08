@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/*
+ * Colors are runtime theme tokens: values are injected as --theme-* custom
+ * properties from the landing config (see features/landing/theme.ts).
+ * Keep this list in sync with `themeKeys`.
+ */
+@theme inline {
+  --color-canvas: var(--theme-canvas);
+  --color-canvas-alt: var(--theme-canvas-alt);
+  --color-surface: var(--theme-surface);
+  --color-inverse: var(--theme-inverse);
+  --color-inverse-line: var(--theme-inverse-line);
+  --color-primary: var(--theme-primary);
+  --color-on-primary: var(--theme-on-primary);
+  --color-accent: var(--theme-accent);
+  --color-on-accent: var(--theme-on-accent);
+  --color-accent-light: var(--theme-accent-light);
+  --color-accent-dark: var(--theme-accent-dark);
+  --color-ink: var(--theme-ink);
+  --color-ink-body: var(--theme-ink-body);
+  --color-ink-muted: var(--theme-ink-muted);
+  --color-ink-subtle: var(--theme-ink-subtle);
+  --color-neutral: var(--theme-neutral);
+  --color-line: var(--theme-line);
+  --color-line-inverse: var(--theme-line-inverse);
+  --color-on-inverse: var(--theme-on-inverse);
+  --color-on-inverse-muted: var(--theme-on-inverse-muted);
+  --font-sans: var(--font-body-face), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading-face), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--theme-canvas);
+  color: var(--theme-ink);
+  font-family: var(--font-sans);
+}
+
+/*
+ * The pinned header adopts the background of the section beneath it (inline)
+ * and re-maps the foreground tokens when that background is light,
+ * so every child (links, buttons, brand) adapts without extra classes.
+ */
+[data-nav-tone="light"] {
+  --theme-on-inverse: var(--theme-ink);
+  --theme-neutral: var(--theme-ink-muted);
+  --theme-line-inverse: var(--theme-line);
+  --theme-inverse-line: var(--theme-line);
+  --nav-active: var(--theme-accent-dark);
+}
+
+/* Theme toggle: show the icon for the mode you would switch to. */
+.theme-sun {
+  display: none;
+}
+:root[data-theme="dark"] .theme-sun {
+  display: inline-block;
+}
+:root[data-theme="dark"] .theme-moon {
+  display: none;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .theme-sun {
+    display: inline-block;
+  }
+  :root:not([data-theme]) .theme-moon {
+    display: none;
+  }
+}
+
+/* Theme switch: let the View Transition draw the circular reveal instead of cross-fading. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 0;
+}
+::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* Fallback when View Transitions are unavailable: smooth color fade for a moment. */
+.theme-fading,
+.theme-fading *,
+.theme-fading *::before,
+.theme-fading *::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease,
+    fill 0.4s ease,
+    stroke 0.4s ease !important;
+}
+
+/*
+ * In-page anchors: land with the section heading a fixed gap below the pinned
+ * header, so the whole section is visible. The top padding is also the part of
+ * the section that is scrolled out of view (negative-offset trick).
+ */
+:root {
+  --header-h: 4rem;
+  --anchor-gap: 2rem;
+}
+@media (min-width: 48rem) {
+  :root {
+    --header-h: 92px;
+  }
+}
+@layer components {
+  .anchor-section {
+    --pt: 4rem;
+    padding-top: var(--pt);
+    scroll-margin-top: calc(var(--header-h) - var(--pt) + var(--anchor-gap));
+  }
+  @media (min-width: 64rem) {
+    .anchor-section {
+      --pt: 6rem;
+    }
+  }
+}
