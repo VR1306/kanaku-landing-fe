@@ -1,8 +1,12 @@
+import { getEnv } from "@/lib/env";
 import {
   landingConfigSchema,
   type LandingConfig,
   type LandingConfigInput,
 } from "../schemas/config";
+
+// The user app is a separate service; its pages are linked by absolute URL from env.
+const { USER_APP_LOGIN_URL: LOGIN_URL, USER_APP_SIGNUP_URL: SIGNUP_URL } = getEnv();
 
 const input: LandingConfigInput = {
   site: {
@@ -47,8 +51,8 @@ const input: LandingConfigInput = {
         { label: "Pricing", href: "#pricing" },
         { label: "FAQ", href: "#faq" },
       ],
-      secondaryCta: { label: "Log in", href: "/login", variant: "outline-inverse" },
-      primaryCta: { label: "Get started free", href: "/signup" },
+      secondaryCta: { label: "Log in", href: LOGIN_URL, variant: "outline-inverse" },
+      primaryCta: { label: "Get started free", href: SIGNUP_URL },
       themeToggle: true,
     },
     {
@@ -58,7 +62,7 @@ const input: LandingConfigInput = {
       headline: [{ text: "Spend smart." }, { text: "Grow faster.", accent: true }],
       description:
         "Kanaku gives you a real-time view of every rupee — track expenses, control budgets and make confident money decisions.",
-      primaryCta: { label: "Get started free", href: "/signup", icon: "arrow-right" },
+      primaryCta: { label: "Get started free", href: SIGNUP_URL, icon: "arrow-right" },
       secondaryCta: {
         label: "See how it works",
         href: "#how-it-works",
@@ -147,7 +151,7 @@ const input: LandingConfigInput = {
           name: "Starter",
           price: { text: "Free" },
           features: ["Unlimited transactions", "Up to 5 budgets", "Monthly reports"],
-          cta: { label: "Start free", href: "/signup", variant: "outline-primary" },
+          cta: { label: "Start free", href: SIGNUP_URL, variant: "outline-primary" },
         },
         {
           name: "Pro",
@@ -161,7 +165,7 @@ const input: LandingConfigInput = {
             "Receipt vault & PDF exports",
             "Smart alerts",
           ],
-          cta: { label: "Upgrade to Pro", href: "/signup", variant: "accent" },
+          cta: { label: "Upgrade to Pro", href: SIGNUP_URL, variant: "accent" },
         },
       ],
     },
@@ -182,7 +186,7 @@ const input: LandingConfigInput = {
       type: "cta",
       title: "Take control of your finances today.",
       description: "Join Kanaku today and set up your account in under two minutes.",
-      cta: { label: "Create my free account", href: "/signup", variant: "dark" },
+      cta: { label: "Create my free account", href: SIGNUP_URL, variant: "dark" },
     },
     {
       id: "footer",

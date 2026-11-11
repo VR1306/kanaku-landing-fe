@@ -4,6 +4,9 @@ import { z } from "zod";
 const optionalString = z.preprocess((v) => (v === "" ? undefined : v), z.string().optional());
 
 const envSchema = z.object({
+  /** The user app is a separate service; the landing page links to it by absolute URL. */
+  USER_APP_LOGIN_URL: z.url(),
+  USER_APP_SIGNUP_URL: z.url(),
   LANDING_API_URL: z.preprocess((v) => (v === "" ? undefined : v), z.url().optional()),
   LANDING_API_TOKEN: optionalString,
   API_TIMEOUT_MS: z.coerce.number().int().min(100).max(60_000).default(8000),
