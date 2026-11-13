@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
 import { useId, useState } from "react";
 import { Icon } from "@/components/ui";
 import { RichText } from "@/components/ui/RichText";
@@ -43,24 +42,20 @@ export function FaqItem({ question, answer, emptyAnswer }: FaqItemProps) {
           />
         </button>
       </h3>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            id={panelId}
-            role="region"
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            className="overflow-hidden"
-          >
-            <RichText
-              text={answer?.trim() ? answer : emptyAnswer}
-              className="space-y-2 px-6 pb-5 leading-relaxed text-ink-muted sm:px-10"
-            />
-          </motion.div>
+      {/* Height animates with grid rows (no JS animation library); `inert` keeps the closed answer out of tab order. */}
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none",
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0",
         )}
-      </AnimatePresence>
+      >
+        <div id={panelId} role="region" inert={!open} className="overflow-hidden">
+          <RichText
+            text={answer?.trim() ? answer : emptyAnswer}
+            className="space-y-2 px-6 pb-5 leading-relaxed text-ink-muted sm:px-10"
+          />
+        </div>
+      </div>
     </div>
   );
 }

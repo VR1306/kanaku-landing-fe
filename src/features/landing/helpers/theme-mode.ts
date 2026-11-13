@@ -2,7 +2,7 @@ import { THEME_STORAGE_KEY } from "../constants";
 
 export type Mode = "light" | "dark";
 
-export function currentMode(): Mode {
+function currentMode(): Mode {
   const attr = document.documentElement.dataset.theme;
   if (attr === "light" || attr === "dark") return attr;
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";

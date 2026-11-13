@@ -2,7 +2,7 @@ import { toKebabCase } from "@/utils/string";
 import { seedPalettes } from "../config/default-theme";
 import { themeKeys, type ThemeColors, type ThemeConfig, type ThemeMode } from "../theme";
 
-export function resolveThemeColors(theme: ThemeConfig | undefined, mode: ThemeMode): ThemeColors {
+function resolveThemeColors(theme: ThemeConfig | undefined, mode: ThemeMode): ThemeColors {
   return { ...seedPalettes[mode], ...theme?.[mode] };
 }
 
@@ -12,7 +12,7 @@ function declarations(colors: ThemeColors, mode: ThemeMode): string {
 }
 
 /** Modes the visitor can use, de-duplicated; both unless the admin restricts them. */
-export function availableModes(theme?: ThemeConfig): ThemeMode[] {
+function availableModes(theme?: ThemeConfig): ThemeMode[] {
   return theme?.modes ? [...new Set(theme.modes)] : ["light", "dark"];
 }
 

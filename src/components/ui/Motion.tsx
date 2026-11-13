@@ -1,9 +1,11 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
+import { cn } from "@/utils/cn";
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
-
-const EASE = [0.22, 1, 0.36, 1] as const;
+/*
+ * Entrance animations are pure CSS (see `.reveal*` / `.grow-*` in globals.css), so nothing waits for JavaScript to
+ * hydrate before it can paint. That matters most for the hero: its text used to start at opacity 0 and only become
+ * visible after the animation library had loaded, which delayed the Largest Contentful Paint by ~2 s.
+ */
 
 interface RevealProps {
   children: ReactNode;
@@ -15,34 +17,34 @@ interface RevealProps {
   /** Starting horizontal offset in px. */
   x?: number;
   as?: "div" | "li";
+  /** Above the fold: animate on load (time-based). Otherwise it animates as it scrolls into view (where supported). */
+  eager?: boolean;
 }
 
-/** Fades and slides content in once it scrolls into view. */
-export function Reveal({ children, className, delay = 0, y = 24, x = 0, as = "div" }: RevealProps) {
-  const Tag = motion[as];
+/** Fades and slides content in. Content is always visible if animations are unsupported or reduced motion is on. */
+export function Reveal({
+  children,
+  className,
+  delay = 0,
+  y = 24,
+  x = 0,
+  as: Tag = "div",
+  eager = false,
+}: RevealProps) {
+  const style = { "--rd": `${delay}s`, "--rx": `${x}px`, "--ry": `${y}px` } as CSSProperties;
   return (
-    <Tag
-      className={className}
-      initial={{ opacity: 0, y, x }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: "0px 0px -80px 0px" }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
-    >
+    <Tag className={cn(eager ? "reveal-eager" : "reveal", className)} style={style}>
       {children}
     </Tag>
   );
 }
 
-/** Horizontal meter that fills from the left to `percent` when scrolled into view. */
+/** Horizontal meter that fills from the left to `percent`. */
 export function FillBar({ percent, className }: { percent: number; className?: string }) {
   return (
-    <motion.div
-      className={className}
-      style={{ width: `${percent}%`, originX: 0 }}
-      initial={{ scaleX: 0 }}
-      whileInView={{ scaleX: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1.1, delay: 0.3, ease: EASE }}
+    <div
+      className={cn("grow-x", className)}
+      style={{ width: `${percent}%`, "--rd": "0.3s" } as CSSProperties}
     />
   );
 }
@@ -58,13 +60,9 @@ export function GrowBar({
   delay?: number;
 }) {
   return (
-    <motion.div
-      className={className}
-      style={{ height, originY: 1 }}
-      initial={{ scaleY: 0 }}
-      whileInView={{ scaleY: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.7, delay, ease: EASE }}
+    <div
+      className={cn("grow-y", className)}
+      style={{ height, "--rd": `${delay}s` } as CSSProperties}
     />
   );
 }

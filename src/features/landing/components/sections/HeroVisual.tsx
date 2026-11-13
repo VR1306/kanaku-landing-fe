@@ -25,6 +25,7 @@ export function HeroVisual({ visual }: { visual: HeroVisualConfig }) {
       </div>
       {visual.floating && (
         <Reveal
+          eager
           delay={0.9}
           y={20}
           className={cn(

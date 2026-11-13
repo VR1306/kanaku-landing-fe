@@ -12,12 +12,12 @@ import {
 import { LabelsProvider } from "@/features/landing/components/LabelsProvider";
 import "./globals.css";
 
-const body = Inter({ variable: "--font-body-face", subsets: ["latin"], display: "swap" });
+const body = Inter({ variable: "--font-body-face", subsets: ["latin"], display: "optional" });
+// Variable font (no `weight` list): one file covers every weight instead of one file per weight.
 const heading = Plus_Jakarta_Sans({
   variable: "--font-heading-face",
   subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  display: "swap",
+  display: "optional",
 });
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -1,11 +1,9 @@
 "use client";
 
-import { motion } from "motion/react";
+const T = "transform 260ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 180ms ease";
+const base = { transformBox: "fill-box", transformOrigin: "center", transition: T } as const;
 
-const SPRING = { type: "spring", stiffness: 420, damping: 30 } as const;
-const lineStyle = { transformBox: "fill-box", transformOrigin: "center" } as const;
-
-/** Three bars that morph into a cross: outer bars slide to center and rotate, middle one collapses. */
+/** Three bars that morph into a cross: outer bars slide to center and rotate, middle one collapses (CSS transitions). */
 export function BurgerIcon({ open }: { open: boolean }) {
   return (
     <svg
@@ -17,35 +15,26 @@ export function BurgerIcon({ open }: { open: boolean }) {
       strokeLinecap="round"
       aria-hidden="true"
     >
-      <motion.line
+      <line
         x1="4"
         x2="20"
         y1="7"
         y2="7"
-        style={lineStyle}
-        initial={false}
-        animate={open ? { y: 5, rotate: 45 } : { y: 0, rotate: 0 }}
-        transition={SPRING}
+        style={{ ...base, transform: open ? "translateY(5px) rotate(45deg)" : "none" }}
       />
-      <motion.line
+      <line
         x1="4"
         x2="20"
         y1="12"
         y2="12"
-        style={lineStyle}
-        initial={false}
-        animate={open ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
-        transition={{ duration: 0.18 }}
+        style={{ ...base, opacity: open ? 0 : 1, transform: open ? "scaleX(0)" : "none" }}
       />
-      <motion.line
+      <line
         x1="4"
         x2="20"
         y1="17"
         y2="17"
-        style={lineStyle}
-        initial={false}
-        animate={open ? { y: -5, rotate: -45 } : { y: 0, rotate: 0 }}
-        transition={SPRING}
+        style={{ ...base, transform: open ? "translateY(-5px) rotate(-45deg)" : "none" }}
       />
     </svg>
   );
