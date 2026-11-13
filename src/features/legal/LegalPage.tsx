@@ -11,10 +11,30 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
 });
 
+function Unavailable({ brand }: { brand: string }) {
+  return (
+    <main id="main" className="flex-1 py-24">
+      <Container className="max-w-[640px] text-center">
+        <h1 className="font-heading text-3xl font-bold text-ink">
+          This page is temporarily unavailable
+        </h1>
+        <p className="mt-4 text-ink-muted">
+          We couldn&apos;t load this document right now. Please try again in a moment.
+        </p>
+        <Link href="/" className="mt-8 inline-block font-semibold text-primary underline">
+          ← Back to {brand}
+        </Link>
+      </Container>
+    </main>
+  );
+}
+
 /** A published legal document. All text comes from the Admin Portal. */
 export async function LegalPage({ slug }: { slug: LegalSlug }) {
-  const [doc, { site }] = await Promise.all([getLegalDocument(slug), getLandingConfig()]);
-  if (!doc) notFound();
+  const [result, { site }] = await Promise.all([getLegalDocument(slug), getLandingConfig()]);
+  if (result.status === "missing") notFound();
+  if (result.status === "unavailable") return <Unavailable brand={site.brand.name} />;
+  const doc = result.doc;
 
   return (
     <>

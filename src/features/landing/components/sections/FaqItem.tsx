@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useId, useState } from "react";
 import { Icon } from "@/components/ui";
+import { RichText } from "@/components/ui/RichText";
 import { cn } from "@/utils/cn";
 
 interface FaqItemProps {
@@ -53,9 +54,10 @@ export function FaqItem({ question, answer, emptyAnswer }: FaqItemProps) {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className="px-6 pb-5 leading-relaxed text-ink-muted sm:px-10">
-              {answer ?? emptyAnswer}
-            </p>
+            <RichText
+              text={answer?.trim() ? answer : emptyAnswer}
+              className="space-y-2 px-6 pb-5 leading-relaxed text-ink-muted sm:px-10"
+            />
           </motion.div>
         )}
       </AnimatePresence>

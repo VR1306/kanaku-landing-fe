@@ -173,12 +173,27 @@ const input: LandingConfigInput = {
       id: "faq",
       type: "faq",
       title: "Frequently asked questions",
-      // TODO(content): answers were not provided in the design; add them via config/API.
+      // Fallback copy, used only while the Admin Portal is unreachable (normally the answers come from the admin).
       items: [
-        { question: "Is Kanaku free to use?" },
-        { question: "Does Kanaku connect to my bank?" },
-        { question: "Can I use it on my phone?" },
-        { question: "Can I export my data?" },
+        {
+          question: "Is Kanaku free to use?",
+          answer:
+            "Yes. The Starter plan is free forever. Upgrade to Pro any time for unlimited budgets, recurring payments and exports.",
+        },
+        {
+          question: "Does Kanaku connect to my bank?",
+          answer:
+            "No. You record transactions yourself, so Kanaku never needs your banking credentials.",
+        },
+        {
+          question: "Can I use it on my phone?",
+          answer: "Yes. Kanaku works in any modern browser on phones, tablets and desktops.",
+        },
+        {
+          question: "Can I export my data?",
+          answer:
+            "Yes. Export your transactions and reports to Excel or CSV from Settings at any time.",
+        },
       ],
     },
     {
