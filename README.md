@@ -29,3 +29,7 @@ Route handlers in `src/app/api/` stay thin and use `src/services/bff/` (envelope
 ## Scripts
 
 `npm run dev | build | start | lint | format | typecheck | check`
+
+## Content comes from the Admin Portal
+
+Set `LANDING_API_URL` to the admin's public API (e.g. `https://<admin>/api/v1/public`); the page then renders `GET {LANDING_API_URL}/landing` (hero, features, steps, pricing with live prices, FAQ, call-to-action, footer, theme, SEO), validated section by section. The bundled default is used only if the Admin Portal is unreachable. The admin calls `POST /api/revalidate` (`Authorization: Bearer $REVALIDATE_SECRET`) after each publish so edits appear immediately. API docs: `{admin origin}/docs/landing`.
