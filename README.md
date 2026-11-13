@@ -33,3 +33,9 @@ Route handlers in `src/app/api/` stay thin and use `src/services/bff/` (envelope
 ## Content comes from the Admin Portal
 
 Set `LANDING_API_URL` to the admin's public API (e.g. `https://<admin>/api/v1/public`); the page then renders `GET {LANDING_API_URL}/landing` (hero, features, steps, pricing with live prices, FAQ, call-to-action, footer, theme, SEO), validated section by section. The bundled default is used only if the Admin Portal is unreachable. The admin calls `POST /api/revalidate` (`Authorization: Bearer $REVALIDATE_SECRET`) after each publish so edits appear immediately. API docs: `{admin origin}/docs/landing`.
+
+## API documentation (Swagger)
+
+The Landing Page's own API is documented at **`/docs`** (Swagger UI) with the machine-readable spec at **`/openapi.json`**
+(`public/openapi.json`): `GET /api/landing`, `POST /api/landing/validate`, `GET /api/landing/schema`, `POST /api/revalidate`.
+The spec is generated from the Admin Portal's `src/openapi/landing.ts`; re-export it there if these endpoints change.
